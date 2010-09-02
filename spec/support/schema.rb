@@ -7,6 +7,7 @@ ActiveRecord::Schema.define(:version => 0) do
     t.string :email
     t.string :phone
     t.string :domain
+    t.boolean :alive, :default => true
 
     t.timestamps
   end

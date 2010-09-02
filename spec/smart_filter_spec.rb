@@ -134,7 +134,29 @@ describe SmartFilter do
     end
 
     context "when the column to apply smart filtering is boolean" do
-      
+
+      context "when the criteria is false" do
+        let(:wright) { Factory(:address_book, :name => 'Orville Wright', :alive => "f") }
+        
+        before { wright.save! }
+        
+        it "returns records with false boolean column" do
+          AddressBook.smart_filter({:alive => "f"}).should have_at_least(1).item
+          AddressBook.smart_filter({:alive => "f"}).should include(AddressBook.find_by_name('Orville Wright'))
+        end
+      end
+
+      context "when the criteria is true" do
+        let(:steve) { Factory(:address_book, :name => 'Steve Jobs', :alive => "t") }
+        
+        before { steve.save! }
+        
+        it "returns records with true boolean column" do
+          AddressBook.smart_filter({:alive => "t"}).should have_at_least(1).item
+          AddressBook.smart_filter({:alive => "t"}).should include(AddressBook.find_by_name('Steve Jobs'))
+        end
+      end
+
     end
 
     context "when the column to apply smart filtering is date or date/time" do

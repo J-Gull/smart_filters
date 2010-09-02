@@ -6,4 +6,5 @@ Factory.define :address_book do |a|
   a.zipcode Faker::Address.zip_code
   a.phone Faker::PhoneNumber.phone_number
   a.domain Faker::Internet.domain_name
+  a.alive false
 end
