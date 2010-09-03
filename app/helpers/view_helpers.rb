@@ -10,7 +10,9 @@ module ViewHelpers
       html << content_tag(:select, :name => "smart_filter[#{column}][criteria]", :id => "#{column}-criteria") do
         criteria_options(model, column)
       end
-      html <<  tag("input", { :type => 'text', :name => "smart_filter[#{column}][value]", :placeholder => "String" })
+      if model.columns_hash[column].type != :boolean
+        html <<  tag("input", { :type => 'text', :name => "smart_filter[#{column}][value]", :placeholder => "String" })
+      end
       html << '<br>'
     end
     html << "<input type='submit'>"
@@ -75,6 +77,13 @@ module ViewHelpers
       end
       html << content_tag(:option, :value => "between") do
         "Between"
+      end
+    elsif model.columns_hash[column].type == :boolean
+      html ||= content_tag(:option, :value => "t") do
+        "true"
+      end
+      html << content_tag(:option, :value => "f") do
+        "false"
       end
     end
     html

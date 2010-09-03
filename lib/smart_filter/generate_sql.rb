@@ -13,7 +13,7 @@ module SmartFilter
     def generate_sql(column, criteria)
       conditions = []
 
-      begin
+      if criteria.is_a?(Hash)
         case criteria.keys.first
         when "contains"         then conditions << contains(column.name, criteria["contains"])
         when "does_not_contain" then conditions << does_not_contain(column.name, criteria["does_not_contain"])
@@ -30,7 +30,7 @@ module SmartFilter
         when "before"           then conditions << before(column.name, criteria["before"])
         when "after"            then conditions << after(column.name, criteria["after"])
         end
-      rescue Exception => e
+      elsif criteria.is_a?(String)
         conditions << boolean(column.name, criteria)
       end
 

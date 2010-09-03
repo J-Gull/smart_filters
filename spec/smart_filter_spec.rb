@@ -39,8 +39,8 @@ describe SmartFilter do
       zheimer.save!
     end
 
-    it "returns an empty array if the criteria is unknown" do
-      AddressBook.smart_filter({:name => {"magic" => "abracadabra"}}).should == []
+    it "returns all records if the criteria is unknown" do
+      AddressBook.smart_filter({:name => {"magic" => "abracadabra"}}).should == AddressBook.find(:all)
     end
     
     it "returns an empty array if the column doesn't exist" do
@@ -53,6 +53,8 @@ describe SmartFilter do
                                   :address => {"contains" => "Abracarab"}}).should be_empty
         AddressBook.smart_filter({:name => {"contains" => "Bob"},
                                   :name => {"contains" => "Martin"}}).should have(1).item
+        AddressBook.smart_filter({:name => {"contains" => "Bob"},
+                                 :alive => "f"}).should have(1).item
       end
     end
 
