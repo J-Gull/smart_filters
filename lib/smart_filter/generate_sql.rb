@@ -36,55 +36,5 @@ module SmartFilter
 
       return conditions
     end
-
-    def boolean(column, handle)
-      ["#{column} = ?", "#{handle}"]
-    end
-
-    def contains(column, term)
-      ["#{column} LIKE ?", "%#{term}%"]
-    end
-
-    def does_not_contain(column, term)
-      ["#{column} NOT LIKE ?", "%#{term}%"]
-    end
-
-    def between(column, start, finish)
-      ["#{column} BETWEEN ? AND ?", {start => finish}]
-    end
-
-    def is(column, term)
-      ["#{column} = ?", term]
-    end
-
-    def starts_with(column, term)
-      ["#{column} LIKE ?", "#{term}%"]
-    end
-
-    def ends_with(column, term)
-      ["#{column} LIKE ?", "%#{term}"]
-    end
-
-    alias :equals_to :is
-
-    def greater_than(column, term)
-      ["#{column} > ?", term]
-    end
-
-    def less_than(column, term)
-      ["#{column} < ?", term]
-    end
-
-    def on(column, term)
-      ["#{column} LIKE ?", "#{term}%"]
-    end
-
-    def before(column, term)
-      ["#{column} < ?", "#{term}"]
-    end
-
-    def after(column, term)
-      ["#{column} > ?", "#{term}"]
-    end
   end
 end
