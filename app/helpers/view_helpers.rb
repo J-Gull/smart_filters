@@ -1,11 +1,49 @@
 module ViewHelpers
   def smart_filter(model, cols, partial = 'shared/filtered_results', locals = {}, &block)
     body = capture(&block)
-    html = ""
+    html = <<-EOT
+    <form id="smart-filter" action='/address_books' method='get'>
+      <input type='hidden' id='model' name='smart_filter[model]' value='#{model}'>
+      <div id="match-type">Match <select><option>any</option></select> of the following rules:
+        <a class="add-row" href="#"><img src="/images/add.png"></a>
+      </div>
+      <div id="filters">
+      <fieldset class="filter">
+        <select class="columns">
+    EOT
+    columns(model, cols).each do |column|
+      html << <<-EOT
+          <option value="#{column}">#{column.humanize}</option>
+      EOT
+    end
+
+    html << <<-EOT
+        </select>
+    EOT
+
+    columns(model, cols).each do |column|
+      html << "<span class='criteria #{column}-criteria'>"
+      html << content_tag(:select, :name => "smart_filter[#{column}][criteria]") do
+        criteria_options(model, column)
+      end
+      if model.columns_hash[column].type != :boolean
+        html <<  tag("input", { :type => 'text', :name => "smart_filter[#{column}][value]", :placeholder => "#{model.columns_hash[column].type.to_s.humanize}" })
+      end
+      html << "</span>"
+    end
+
+    html << <<-EOT
+        <a class="remove-row" href="#"><img src="/images/remove.png"></a>
+      </fieldset>
+      </div>
+      <input type="submit" value="Search">
+    </form>
+    EOT
+
+=begin
     html << "<form action='/address_books' method='get'>"
     html << "<input type='hidden' id='model' name='smart_filter[model]' value='#{model}'>"
     columns(model, cols).each do |column|
-
       html << content_tag(:label, column.capitalize, :for => "#{column}")
       html << content_tag(:select, :name => "smart_filter[#{column}][criteria]", :id => "#{column}-criteria") do
         criteria_options(model, column)
@@ -17,7 +55,7 @@ module ViewHelpers
     end
     html << "<input type='submit'>"
     html << "</form>"
-
+=end
     html << render(:partial => partial, :locals => locals) if @filtered_results
     html << body unless @filtered_results
     concat html
