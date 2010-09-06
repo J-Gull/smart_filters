@@ -4,9 +4,6 @@ module ViewHelpers
     html = <<-EOT
     <form id="smart-filter" action='/address_books' method='get'>
       <input type='hidden' id='model' name='smart_filter[model]' value='#{model}'>
-      <div id="match-type">Match <select><option>any</option></select> of the following rules:
-        <a class="add-row" href="#"><img src="/images/add.png"></a>
-      </div>
       <div id="filters">
       <fieldset class="filter">
         <select class="columns">
@@ -27,16 +24,22 @@ module ViewHelpers
         criteria_options(model, column)
       end
       if model.columns_hash[column].type != :boolean
-        html <<  tag("input", { :type => 'text', :name => "smart_filter[#{column}][value]", :placeholder => "#{model.columns_hash[column].type.to_s.humanize}" })
+        html <<  ' ' + tag("input", { :type => 'text', :name => "smart_filter[#{column}][value]", :placeholder => "#{model.columns_hash[column].type.to_s.humanize}" })
       end
       html << "</span>"
     end
 
     html << <<-EOT
-        <a class="remove-row" href="#"><img src="/images/remove.png"></a>
+
+        <div id="buttons">
+          <a class="add-row" href="#"><img src="/images/add.png"></a>
+          <a class="remove-row" href="#"><img src="/images/remove.png"></a>
+        </div>
       </fieldset>
       </div>
+      <div id="submit-btn">
       <input type="submit" value="Search">
+      </div
     </form>
     EOT
 
