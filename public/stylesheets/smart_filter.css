@@ -1,0 +1,60 @@
+form#smart-filter {
+  background: #dfdfdf;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+  width: 528px;
+}
+
+form#smart-filter div#match-type {
+  padding: 10px;
+  padding-right: 7px;
+  padding-bottom: 5px;
+}
+
+form#smart-filter input[type="submit"] {
+  margin: 5px;
+  margin: 10px 10px;
+}
+
+fieldset.filter {
+  padding: 5px;
+  border: none;
+  border-bottom: 1px solid #eee;
+}
+
+fieldset.filter select {
+  font-size: 14px;
+  width: 150px;
+}
+
+fieldset.filter input[type="text"] {
+  font-size: 12px;
+  width: 150px;
+}
+
+fieldset.filter a {
+  margin-top: 4px;
+}
+
+form#smart-filter div#match-type a.add-row, fieldset.filter a:hover {
+  background: none;
+}
+
+a:active {
+  position: relative;
+  top: 1px;
+}
+
+#buttons {
+  float:right;
+  margin-top: 4px;
+}
+
+form {
+  text-align: center;
+}
+
+div#submit-btn {
+  text-align: right;
+}
