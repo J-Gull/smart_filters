@@ -7,7 +7,7 @@ def sort_smart_filter
       if params[:smart_filter][:model].constantize.columns_hash[column].type != :boolean
         hash.merge!({column.to_sym => {value[:criteria] => value[:value]}})
       else
-        hash.merge!({column.to_sym => value[:criteria]})
+        hash.merge!({column.to_sym => value[:criteria]}) if value[:criteria].present? 
       end
     end
     hash.delete(:model)
