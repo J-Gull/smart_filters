@@ -31,7 +31,7 @@ describe ViewHelpers do
 
       it "creates input tags for all columns except booleans" do
         AddressBook.column_names.each do |column|
-          text_field_name_attributes.should include("smart_filter[#{column}][value]")
+          text_field_name_attributes.should include("smart_filter[#{column}][value][]")
         end
       end
     end
@@ -41,7 +41,7 @@ describe ViewHelpers do
       let(:text_field_name_attributes) { smart_filter_helper.scan(/<input\b(?>\s+(?:id="([^"]*)"|name="([^"]*)")|[^\s>]+|\s+)*>/).flatten.compact }
 
       it "creates input tags for the given columns" do
-        text_field_name_attributes.should include("smart_filter[name][value]")
+        text_field_name_attributes.should include("smart_filter[name][value][]")
       end
     end
 

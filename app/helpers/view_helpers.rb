@@ -3,7 +3,9 @@ module ViewHelpers
     body = capture(&block)
     html = <<-EOT
     <form id="smart-filter" action='/address_books' method='get'>
-      <input type='hidden' id='model' name='smart_filter[model]' value='#{model}'>
+      <input type='hidden' id='model' name='smart_filter[_model]' value='#{model}'>
+      <div id="rule">Match <select name="smart_filter[_rule]"><option value="AND">all</option><option value="OR">any</option></select> of the following rules:</div>
+
       <div id="filters">
       <fieldset class="filter">
         <select class="columns">
@@ -20,17 +22,19 @@ module ViewHelpers
 
     columns(model, cols).each do |column|
       html << "<span class='criteria #{column}-criteria'>"
-      html << content_tag(:select, :name => "smart_filter[#{column}][criteria]") do
+
+      html << content_tag(:select, :name => "smart_filter[#{column}][criteria][]") do
         criteria_options(model, column)
       end
+
       if model.columns_hash[column].type != :boolean
-        html <<  ' ' + tag("input", { :type => 'text', :name => "smart_filter[#{column}][value]", :placeholder => "#{model.columns_hash[column].type.to_s.humanize}" })
+        html <<  ' ' + tag("input", { :type => 'text', :name => "smart_filter[#{column}][value][]", :placeholder =>  "#{model.columns_hash[column].type.to_s.humanize}" })
       end
+
       html << "</span>"
     end
 
     html << <<-EOT
-
         <div id="buttons">
           <a class="add-row" href="#"><img src="/images/add.png"></a>
           <a class="remove-row" href="#"><img src="/images/remove.png"></a>
@@ -43,22 +47,6 @@ module ViewHelpers
     </form>
     EOT
 
-=begin
-    html << "<form action='/address_books' method='get'>"
-    html << "<input type='hidden' id='model' name='smart_filter[model]' value='#{model}'>"
-    columns(model, cols).each do |column|
-      html << content_tag(:label, column.capitalize, :for => "#{column}")
-      html << content_tag(:select, :name => "smart_filter[#{column}][criteria]", :id => "#{column}-criteria") do
-        criteria_options(model, column)
-      end
-      if model.columns_hash[column].type != :boolean
-        html <<  tag("input", { :type => 'text', :name => "smart_filter[#{column}][value]", :placeholder => "String" })
-      end
-      html << '<br>'
-    end
-    html << "<input type='submit'>"
-    html << "</form>"
-=end
     html << render(:partial => partial, :locals => locals) if @filtered_results
     html << body unless @filtered_results
     concat html

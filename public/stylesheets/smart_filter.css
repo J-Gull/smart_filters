@@ -58,3 +58,9 @@ form {
 div#submit-btn {
   text-align: right;
 }
+
+#rule {
+  text-align: left;
+  padding-top: 5px;
+  padding-left: 14px;
+}
