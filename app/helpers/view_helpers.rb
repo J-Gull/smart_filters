@@ -23,7 +23,7 @@ module ViewHelpers
     columns(model, cols).each do |column|
       html << "<span class='criteria #{column}-criteria'>"
 
-      html << content_tag(:select, :name => "smart_filter[#{column}][criteria][]") do
+      html << content_tag(:select, :name => "smart_filter[#{column}][criteria][]", :class => 'criteria-dropdown') do
         criteria_options(model, column)
       end
 

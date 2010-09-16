@@ -13,7 +13,8 @@ module SmartFilter
 
     def generate_sql(column, criteria)
       conditions = []
-
+      Rails.logger.warn "#{criteria.inspect}"
+      
       if criteria.is_a?(Hash)
         if criteria.keys.first.is_a?(Array)
           criteria.keys.first.each_with_index do |item, index|
@@ -27,8 +28,8 @@ module SmartFilter
             when "greater_than"     then conditions << greater_than(column.name, criteria.values.first[index])
             when "less_than"        then conditions << less_than(column.name, criteria.values.first[index])
             when "between"          then conditions << between(column.name, 
-                                                              criteria["between"].first, 
-                                                              criteria["between"].last)
+                                                              criteria.values.first[index],
+                                                              criteria.values.first[index + 1]); criteria.values.first.delete_at(index + 1)
             when "on"               then conditions << on(column.name, criteria.values.first[index])
             when "before"           then conditions << before(column.name, criteria.values.first[index])
             when "after"            then conditions << after(column.name, criteria.values.first[index])

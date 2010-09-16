@@ -25,6 +25,19 @@ jQuery(function() {
     $(this).parent('fieldset.filter').children('span.' + dropDownToShow + '-criteria').show();
   });
 
+  $('select.criteria-dropdown').live('change', function() {
+    if (($(this).val() == 'between') && ($(this).parent().find('input').length < 2)) 
+    {
+      $(this).parent().find('input').first().clone().appendTo($(this).parent());
+      $(this).parent().find('input').addClass('between-input');
+    } 
+    else if (($(this).val() != 'between') && ($(this).parent().find('input').length > 1)) 
+    {
+      $(this).parent().find('input').last().remove();
+      $(this).parent().find('input').removeClass('between-input');
+    };
+  });
+
   $('#smart-filter').submit(function() {
     $('.filter').each(function(index) {
       $(this).find('span select').each(function(index) {

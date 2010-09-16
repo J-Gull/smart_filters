@@ -64,3 +64,7 @@ div#submit-btn {
   padding-top: 5px;
   padding-left: 14px;
 }
+
+.between-input {
+  width: 73px !important;
+}
