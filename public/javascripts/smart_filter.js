@@ -2,8 +2,7 @@
 // This file is automatically included by javascript_include_tag :defaults
 jQuery(function() {
   $('a.add-row').live('click', function() {
-    var filterRow = $('form#smart-filter fieldset.filter:first').clone();
-    $('#filters').append(filterRow);
+    $('form#smart-filter fieldset.filter:first').clone().find('input').val('').end().appendTo('#filters');
     return false;
   });
 
@@ -26,13 +25,10 @@ jQuery(function() {
   });
 
   $('select.criteria-dropdown').live('change', function() {
-    if (($(this).val() == 'between') && ($(this).parent().find('input').length < 2)) 
-    {
+    if (($(this).val() == 'between') && ($(this).parent().find('input').length < 2)) {
       $(this).parent().find('input').first().clone().appendTo($(this).parent());
       $(this).parent().find('input').addClass('between-input');
-    } 
-    else if (($(this).val() != 'between') && ($(this).parent().find('input').length > 1)) 
-    {
+    } else if (($(this).val() != 'between') && ($(this).parent().find('input').length > 1)) {
       $(this).parent().find('input').last().remove();
       $(this).parent().find('input').removeClass('between-input');
     };
@@ -52,4 +48,35 @@ jQuery(function() {
       });
     });
   });
+
+  var currentQuery = $.deparam.querystring().smart_filter;
+
+  $('#rule select').val(currentQuery._rule);
+
+  delete currentQuery._model;
+  delete currentQuery._rule;
+
+  var currentQuerySize = 0;
+
+  for(var columnName in currentQuery) {
+    $.each(currentQuery[columnName].value, function(index, value) {  
+      currentQuerySize++;
+    });
+  };
+  
+  while ($("#filters fieldset").length < currentQuerySize) {
+    $(".add-row").first().click();
+  }
+  
+  var i = 0;
+  for(var columnName in currentQuery) {
+    $.each(currentQuery[columnName].value, function(index, value) {  
+      var currentElement = $('.filter:eq(' + i + ')')
+      currentElement.find('select.columns').val(columnName);
+      currentElement.find('select.columns').change();
+      currentElement.find('span.' + columnName + '-criteria').find('select').val(currentQuery[columnName].criteria);
+      currentElement.find("input[name*='[" + columnName + "][value]']").val(value);
+      i++;
+    });
+  };
 });
