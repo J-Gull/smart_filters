@@ -108,9 +108,6 @@ module ViewHelpers
         "Between"
       end
     elsif model.columns_hash[column].type == :boolean
-      html ||= content_tag(:option, :value => "") do
-        "Select"
-      end
       html ||= content_tag(:option, :value => "t") do
         "True"
       end
